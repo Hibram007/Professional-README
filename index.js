@@ -1,5 +1,6 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
+fs = require('fs');
 
 // wrapping function to to return inquirer returned data
 const promptUser = () => {
@@ -74,11 +75,6 @@ const promptProject = answers => {
             message: 'Provide any usage information',
         },
         {
-            type: 'input',
-            name: 'installation',
-            message: 'Provide instructions for installation',
-        },
-        {
         type: 'checkbox',
         name: 'license',
         message: 'What License did you use for this project? (Check all that apply)',
@@ -130,9 +126,13 @@ const promptProject = answers => {
         });
     };
 
-
+// NOTE FOR NEXT LOOK- THIS MOST likeyl goes in generate.js -- console logs oddly
 // TODO: Create a function to write README file
 //function writeToFile(fileName, data) {}
+fs.writeFile('README.md', 'answers', function (err) {
+    if (err) return console.log(err);
+    console.log("hello world success!");
+});
 
 // TODO: Create a function to initialize app
 //function init() {}
