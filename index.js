@@ -3,8 +3,56 @@ const inquirer = require('inquirer');
 
 // wrapping function to to return inquirer returned data
 const promptUser = () => {
-    return inquirer.prompt([
-        //project questions
+// array of questions for user
+ return inquirer.prompt([
+      //profile questions
+      {
+        type:'input',
+        name: 'name',
+        message: 'What is your name? (Required)',
+        validate: nameInput => {
+            if (nameInput) {
+                return true;
+            } else {
+                console.log('Please enter your name!');
+                return false;
+            }
+        }
+    },
+    {
+        type: 'input',
+        name: 'github',
+        message: 'Enter your GitHub Username (Required)',
+        validate: gitHubInput => {
+            if (gitHubInput) {
+                return true;
+            } else {
+                console.log('Please enter your github username!');
+                return false;
+            }
+        }
+      },
+      {
+        type: 'input',
+        name: 'email',
+        message: 'Provide your email address for questions regarding the project',
+    }
+    ]);
+};
+
+const promptProject = answers => {
+    
+    //this is a check to make sure array is not cleared each time funct is called
+  if (!answers.projects) {
+   answers.projects = [];
+  }
+  console.log(`
+  =================
+  Add a New Project
+  =================
+  `);
+  return inquirer.prompt([
+        // questions
         {
             type:'input',
             name: 'Title',
@@ -48,30 +96,40 @@ const promptUser = () => {
         },
         {
             type: 'input',
-            name: 'questions',
-            message: 'Provide your Github username',
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'Provide your email address for questions regarding the project',
-        },
+            name: 'link',
+            message: 'Enter the GitHub link to your project. (Required)',
+            validate: linkInput => {
+                if (linkInput) {
+                    return true;
+                } else {
+                    console.log('Please enter the link to your github!');
+                    return false;
+                }
+            }
+          },
+          {
+            type: 'confirm',
+            name: 'feature',
+            message: 'Would you like to feature this project?',
+            default: false
+          },
+          {
+            type: 'confirm',
+            name: 'confirmAddProject',
+            message: 'Would you like to enter another project?',
+            default: false
+          }
+        ])
+        .then(projectData => {
+          answers.projects.push(projectData);
+          if (projectData.confirmAddProject) {
+            return promptProject(answers);
+          } else {
+            return answers;
+          }
+        });
+    };
 
-    ]);
-};
-
-// TODO: Create an array of questions for user input
-const promptProject = portfolioData => {
-    // empty array is essentially the data collecting system.
-  // If there's no 'projects' array property, create one --- this is a check to make sure array is not cleared each time funct is called
-if (!portfolioData.projects) {
-  portfolioData.projects = [];
-};
-}
-
-
-// TODO: Create an array of questions for user input
-//const questions = [];
 
 // TODO: Create a function to write README file
 //function writeToFile(fileName, data) {}
@@ -83,7 +141,12 @@ if (!portfolioData.projects) {
 //init();
 
 promptUser()
-  .then(promptProject)
-  .then(portfolioData => {
-   console.log(portfolioData);
-  }); 
+ .then(promptProject)
+ .then(answers => {
+console.log(answers);
+}); 
+
+/* - code to reference for displayiing indiviaul valuesof user input
+.then((answer) => {
+    console.log("Hello" + answer);
+}); */
