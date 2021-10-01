@@ -1,5 +1,10 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
+fs = require('fs');
+
+// inner program file links
+const genMD = require("./utils/generateMarkdown");
+
 
 // wrapping function to to return inquirer returned data
 const promptUser = () => {
@@ -52,7 +57,7 @@ const promptProject = answers => {
   =================
   `);
   return inquirer.prompt([
-        // questions
+        // project questions
         {
             type:'input',
             name: 'Title',
@@ -72,11 +77,6 @@ const promptProject = answers => {
             type: 'input',
             name: 'Usage',
             message: 'Provide any usage information',
-        },
-        {
-            type: 'input',
-            name: 'installation',
-            message: 'Provide instructions for installation',
         },
         {
         type: 'checkbox',
@@ -131,22 +131,18 @@ const promptProject = answers => {
     };
 
 
-// TODO: Create a function to write README file
-//function writeToFile(fileName, data) {}
+// fs.writeFile('README.md', 'answers', function (err) {
+//     if (err) return console.log(err);
+//     console.log("hello world success!");
+// });
 
-// TODO: Create a function to initialize app
-//function init() {}
-
-// Function call to initialize app
-//init();
 
 promptUser()
  .then(promptProject)
  .then(answers => {
 console.log(answers);
+fs.writeFile('README.md', genMD(answers.projects[0]), function (err) {
+    if (err) return console.log(err);
+});
 }); 
 
-/* - code to reference for displayiing indiviaul valuesof user input
-.then((answer) => {
-    console.log("Hello" + answer);
-}); */
