@@ -53,7 +53,7 @@ const promptProject = answers => {
   =================
   `);
   return inquirer.prompt([
-        // questions
+        // project questions
         {
             type:'input',
             name: 'Title',
@@ -129,10 +129,11 @@ const promptProject = answers => {
 // NOTE FOR NEXT LOOK- THIS MOST likeyl goes in generate.js -- console logs oddly
 // TODO: Create a function to write README file
 //function writeToFile(fileName, data) {}
-fs.writeFile('README.md', 'answers', function (err) {
-    if (err) return console.log(err);
-    console.log("hello world success!");
-});
+
+// fs.writeFile('README.md', 'answers', function (err) {
+//     if (err) return console.log(err);
+//     console.log("hello world success!");
+// });
 
 // TODO: Create a function to initialize app
 //function init() {}
@@ -144,6 +145,9 @@ promptUser()
  .then(promptProject)
  .then(answers => {
 console.log(answers);
+fs.writeFile('README.md', JSON.stringify(answers), function (err) {
+    if (err) return console.log(err);
+});
 }); 
 
 /* - code to reference for displayiing indiviaul valuesof user input
