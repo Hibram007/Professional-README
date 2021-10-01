@@ -2,6 +2,10 @@
 const inquirer = require('inquirer');
 fs = require('fs');
 
+// inner program file links
+const genMD = require("./utils/generateMarkdown");
+
+
 // wrapping function to to return inquirer returned data
 const promptUser = () => {
 // array of questions for user
@@ -126,31 +130,19 @@ const promptProject = answers => {
         });
     };
 
-// NOTE FOR NEXT LOOK- THIS MOST likeyl goes in generate.js -- console logs oddly
-// TODO: Create a function to write README file
-//function writeToFile(fileName, data) {}
 
 // fs.writeFile('README.md', 'answers', function (err) {
 //     if (err) return console.log(err);
 //     console.log("hello world success!");
 // });
 
-// TODO: Create a function to initialize app
-//function init() {}
-
-// Function call to initialize app
-//init();
 
 promptUser()
  .then(promptProject)
  .then(answers => {
 console.log(answers);
-fs.writeFile('README.md', JSON.stringify(answers), function (err) {
+fs.writeFile('README.md', genMD(answers.projects[0]), function (err) {
     if (err) return console.log(err);
 });
 }); 
 
-/* - code to reference for displayiing indiviaul valuesof user input
-.then((answer) => {
-    console.log("Hello" + answer);
-}); */
