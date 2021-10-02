@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-// Test out this code for markdown generation
+// markdown generation
 function generateMarkdown(userResponses, userInfo) {
 
   // Generate Table of Contents conditionally based on userResponses
