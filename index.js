@@ -44,7 +44,7 @@ inquirer.prompt([
 ]).then((response) => {
     console.log(response)
 
-    fs.writeFile('README.md', genMD(response), err => {
+    fs.writeFile('Createdreadme.md', genMD(response), err => {
         if (err) throw err;
     });
 }
