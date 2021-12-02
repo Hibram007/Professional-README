@@ -1,138 +1,53 @@
 const fs = require('fs');
 
-// markdown generation
-function generateMarkdown(userResponses, userInfo) {
+// License functions for " Licensing prompt question"
+function renderLicenseLink(license) {
+  if(license === "MIT"){
+    return `[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)`
+  } else if(license === 'Mozilla'){
+    return `[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-red.svg)](https://opensource.org/licenses/MPL-2.0)`
+  }
+  else if(license === 'Apache'){
+    return `[![License](https://img.shields.io/badge/License-Apache%202.0-orange.svg)](https://opensource.org/licenses/Apache-2.0)`
+  }
+  else if(license === 'Boost'){
+    return `[![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg)](https://www.boost.org/LICENSE_1_0.txt)`
+  }
+  else if(license === 'Unilicense'){
+    return `[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-brightgreen.svg)](http://unlicense.org/)`
+  }
+  else if(license === 'GNU'){
+    return `[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blueviolet.svg)](https://www.gnu.org/licenses/gpl-3.0)`
+  }
+}
+// markdown generation - ( will take all responses from inquirer prompt)
+function generateMarkdown(data) {
+  let badgeLink = renderLicenseLink(data.license)
+  return `# ${data.Title}
 
-  // Generate Table of Contents conditionally based on userResponses
-  let toC = `## Table of Contents`;
-
-  if (userResponses.installation !== '') { toC += `
-  * [Installation](#installation)` };
-
-  if (userResponses.usage !== '') { toC += `
-  * [Usage](#usage)` };
-
-  if (userResponses.contributing !== '') { toC += `
-  * [Contributing](#contributing)` };
-
-  if (userResponses.tests !== '') { toC += `
-  * [Tests](#tests)` };
-
-
-  // Generate markdown for the top required portions of the README
-  let draftMarkdown = 
-  `# ${userResponses.title}
-  ![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/${userResponses.username}/${userResponses.repo}?style=flat&logo=appveyor) ![Badge for GitHub last commit](https://img.shields.io/github/last-commit/${userResponses.username}/${userResponses.repo}?style=flat&logo=appveyor)
+## Table of Contents
+* Description
+* Installation
+* License
+* Contributors
+* Questions
   
-  Check out the badges hosted by [shields.io](https://shields.io/).
+## Description
+${data.Description}
   
+## Installation
+${data.installation}
   
-  ## Description 
+## License
+${badgeLink}
   
-  *The what, why, and how:* 
+## Contributions
+${data.Contributions}
   
-  ${userResponses.description}
+## Questions? Contact Me:
+* GitHub: [GitHub Profile](https://github.com/${data.github})
+* Email: ${data.email}
   `
-
-  // Add Table of Contents to markdown
-  draftMarkdown += toC;
- 
-  // Add License section since License is required to Table of Contents
-  draftMarkdown += `
-  * [License](#license)`;
-  
-
-  // Optional Installation section
-  if (userResponses.installation !== '') {
-  
-  draftMarkdown +=
-  `
-  
-  ## Installation
-  
-  *Steps required to install project and how to get the development environment running:*
-  
-  ${userResponses.installation}`
-  };
-  
-
-  // Optional Usage section
-  if (userResponses.usage !== '') {
-  
-  draftMarkdown +=
-  
-  `
-  
-  ## Usage 
-  
-  *Instructions and examples for use:*
-  
-  ${userResponses.usage}`
-  };
-  
-  
-  // Optional Contributing section
-  if (userResponses.contributing !== '') {
-  `
-  
-  ## Contributing
-  
-  *If you would like to contribute it, you can follow these guidelines for how to do so.*
-  
-  ${userResponses.contributing}`
-  };
-  
-
-  // Optional Tests section
-  if (userResponses.tests !== '') {
-  
-  draftMarkdown +=
-  `
-  
-  ## Tests
-  
-  *Tests for application and how to run them:*
-  
-  ${userResponses.tests}`
-  };
-
-
-  // License section is required
-  draftMarkdown +=
-  `
-  
-  ## License
-  
-  ${userResponses.license}
-  `;
-
-
-  // Questions / About Developer section
-  let draftDev = 
-  `
-  ---
-  
-  ## Questions?
-
-  For any questions, please contact me with the information below:
- 
-  GitHub: [@${userInfo.login}](${userInfo.url})
-  `;
-
-  // If GitHub email is not null, add to Developer section
-  if (userInfo.email !== null) {
-  
-  draftDev +=
-  `
-  Email: ${userInfo.email}
-  `};
-
-  // Add developer section to markdown
-  draftMarkdown += draftDev;
-
-  // Return markdown
-  return draftMarkdown;
-  
 }
 
 module.exports = generateMarkdown;
